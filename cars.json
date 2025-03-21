@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Seat Leon Cupra 290",
+        "image": "images/cupra290front.jpg",
+        "year": 2019,
+        "engine": "2.0 Litre Turbocharged 4 Cylinder",
+        "horsepower": 286,
+        "price": "£18,000"
+    },
+    {
+        "name": "BMW M8 Competition" ,
+        "image": "images/bmwm8front.jpg" ,
+        "year": 2020,
+        "engine": "4.4 Litre V8" ,
+        "horsepower": 616,
+        "price": "£60,000" 
+    }
+]

@@ -1,0 +1,108 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body styles */
+body {
+    background-color: #1a1a1a;
+    color: white;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background-color: #333;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #ffcc00; /* Yellow highlight */
+}
+
+/* Car Showcase Section */
+#car-showcase {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 800px;
+    background: #222;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+#car-showcase h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Links & Buttons */
+a, button {
+    background: #ffcc00;
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+a:hover, button:hover {
+    background: #ffaa00;
+}
+.car-card {
+    border: 2px solid #333;
+    padding: 15px;
+    margin: 20px;
+    width: 350px; /* Slightly wider for better readability */
+    text-align: center;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.car-card img {
+    width: 100%; /* Ensures full width */
+    max-width: 400px; /* Prevents it from being too large */
+    height: auto; /* Keeps correct aspect ratio */
+    display: block;
+    margin: 0 auto; /* Centers the image */
+    border-radius: 5px;
+}
+
+/* Ensure descriptions are visible */
+.car-card h3, .car-card p {
+    font-size: 16px;
+    color: #222; /* Dark text for readability */
+    margin-top: 10px;
+}
+
+.car-card p {
+    line-height: 1.5; /* Adds space between lines */
+}
+#featured-car-container {
+    max-width: 600px; /* Increase width */
+    margin: 20px auto; /* Center it */
+    padding: 20px;
+    background: #222;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Featured car card styling */
+#featured-car-container .car-card {
+    width: 100%; /* Make it take full width of container */
+    max-width: 550px; /* Slightly bigger than directory cars */
+    padding: 20px;
+}
+
+/* Make Featured Car Image Larger */
+#featured-car-container .car-card img {
+    max-width: 500px; /* Bigger image */
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
