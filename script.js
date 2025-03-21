@@ -1,4 +1,5 @@
-fetch("cars.json") // Step 1: Load the JSON file
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("cars.json") // Step 1: Load the JSON file
     .then(response => response.json()) // Step 2: Convert response to JSON
     .then(data => { // Step 3: Process the JSON data
         let carList = document.getElementById("car-list"); // Find the car list section
@@ -17,5 +18,7 @@ fetch("cars.json") // Step 1: Load the JSON file
 
             carList.appendChild(carItem); // Add this car to the page
         });
-    })
-    .catch(error => console.error("Error loading cars:", error)); // Handle any errors
+    });
+}
+
+.catch(error => console.error("Error loading cars:", error))); // Handle any errors

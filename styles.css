@@ -106,3 +106,10 @@ a:hover, button:hover {
     height: auto;
     border-radius: 10px;
 }
+
+#racingGame {
+    display: block;
+    margin: 20px auto;
+    border: 2px solid white;
+}
+
