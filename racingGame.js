@@ -2,9 +2,8 @@
 const canvas = document.getElementById("racingGame");
 const ctx = canvas.getContext("2d");
 
-
 const carImage = new Image();
-carImage.src = "images/cupra290front.png"; // Make sure this path is correct
+carImage.src = "images/playercarwhite.png"; // Ensure correct path
 
 carImage.onload = () => {
     console.log("Car image loaded successfully.");
@@ -13,17 +12,16 @@ carImage.onerror = () => {
     console.error("Failed to load car image.");
 };
 
-
 // Define game properties
-const laneCount = 3; // Number of lanes
-const laneWidth = canvas.width / laneCount; // Width of each lane
+const laneCount = 3;
+const laneWidth = canvas.width / laneCount;
 
 // Player car properties
 const car = {
-    width: laneWidth / 2,
-    height: 50,
-    x: laneWidth / 2, // Start in the middle lane
-    y: canvas.height - 100,
+    width: laneWidth * 0.6,
+    height: 80,
+    x: (laneWidth * 1.5) - (laneWidth * 0.3),
+    y: canvas.height - 120,
     speed: 10
 };
 
@@ -49,40 +47,41 @@ obstacleImages.forEach(src => {
     loadedObstacleImages.push(img);
 });
 
-
 // Obstacles array
 let obstacles = [];
-const obstacleSpeed = 5;
+let obstacleSpeed = 5;
+
+// Score and Level System
+let score = 0;
+let level = 1;
+let highScore = localStorage.getItem("highScore") || 0;
 
 // Handle keyboard input
 document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft" && car.x > laneWidth / 4) {
-        car.x -= laneWidth; // Move left
+        car.x -= laneWidth;
     }
     if (event.key === "ArrowRight" && car.x < canvas.width - laneWidth * 1.25) {
-        car.x += laneWidth; // Move right
+        car.x += laneWidth;
     }
 });
 
 // Function to update obstacles
-// Track last spawned lane to prevent all lanes being filled
 let lastSpawnedLane = -1;
 let spawnCooldown = 0;
 
 function updateObstacles() {
-    // Reduce cooldown (prevents too frequent spawns)
     if (spawnCooldown > 0) {
         spawnCooldown--;
-        return; // Skip spawning until cooldown is over
+        return;
     }
 
-    // Only spawn a new obstacle sometimes
-    if (Math.random() < 0.02) { // 2% chance per frame (~1 every 2 sec)
-        let numObstacles = Math.random() < 0.5 ? 1 : 2; // 50% chance for 1 or 2 obstacles
-        let availableLanes = [0, 1, 2].filter(lane => lane !== lastSpawnedLane); // Avoid last lane
+    if (Math.random() < 0.02) {
+        let numObstacles = Math.random() < 0.5 ? 1 : 2;
+        let availableLanes = [0, 1, 2].filter(lane => lane !== lastSpawnedLane);
     
         for (let i = 0; i < numObstacles; i++) {
-            let randomLane = availableLanes.splice(Math.floor(Math.random() * availableLanes.length), 1)[0]; // Pick a lane
+            let randomLane = availableLanes.splice(Math.floor(Math.random() * availableLanes.length), 1)[0];
             
             let obstacle = {
                 x: (randomLane * laneWidth) + (laneWidth / 4),
@@ -93,35 +92,26 @@ function updateObstacles() {
             };
     
             obstacles.push(obstacle);
-            lastSpawnedLane = randomLane; // Store last used lane
+            lastSpawnedLane = randomLane;
         }
     
-        spawnCooldown = 60; // Add cooldown (~1 sec)
+        spawnCooldown = 60;
     }
 
-    // Move obstacles down
     for (let i = 0; i < obstacles.length; i++) {
         obstacles[i].y += obstacleSpeed;
 
-        // Remove off-screen obstacles
         if (obstacles[i].y > canvas.height) {
             obstacles.splice(i, 1);
-            i--; // Adjust index after removal
+            i--;
+            score += 10;
+            if (score % 100 === 0) {
+                level++;
+                obstacleSpeed++;
+            }
         }
     }
 }
-
-    // Move obstacles down
-    for (let i = 0; i < obstacles.length; i++) {
-        obstacles[i].y += obstacleSpeed;
-
-        // Remove off-screen obstacles
-        if (obstacles[i].y > canvas.height) {
-            obstacles.splice(i, 1);
-            i--; // Adjust index after removal
-        }
-    }
- 
 
 // Function to check for collisions
 function checkCollisions() {
@@ -134,25 +124,29 @@ function checkCollisions() {
         ) {
             alert("Game Over!");
             resetGame();
-            return; // Restart game
+            return;
         }
     }
 }
 
 function resetGame() {
-    car.x = (laneWidth * 1.5) - (laneWidth / 4); // Reset car to the middle lane
-    car.y = canvas.height - 100; // Reset car's position
-    obstacles = []; // Clear all obstacles
+    car.x = (laneWidth * 1.5) - (laneWidth * 0.3);
+    car.y = canvas.height - 120;
+    obstacles = [];
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+    }
+    score = 0;
+    level = 1;
+    obstacleSpeed = 5;
 }
-
-
 
 // Function to draw the road with lanes
 function drawRoad() {
     ctx.fillStyle = "gray";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw lane lines
     ctx.strokeStyle = "white";
     ctx.lineWidth = 4;
     for (let i = 1; i < laneCount; i++) {
@@ -177,6 +171,15 @@ function drawObstacles() {
     }
 }
 
+// Function to draw UI
+function drawUI() {
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Score: ${score}`, 10, 30);
+    ctx.fillText(`Level: ${level}`, 10, 60);
+    ctx.fillText(`High Score: ${highScore}`, 10, 90);
+}
+
 // Main game loop
 function updateGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -186,11 +189,10 @@ function updateGame() {
     drawObstacles();
     drawCar();
     checkCollisions();
+    drawUI();
 
     requestAnimationFrame(updateGame);
 }
 
 canvas.height = 700;
-
-// Start the game loop
 updateGame();
